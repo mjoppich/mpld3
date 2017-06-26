@@ -17,7 +17,8 @@ mpld3_Axis.prototype.defaultProps = {
     axiscolor: "black",
     scale: "linear",
     grid: {},
-    zorder: 0
+    zorder: 0,
+    tickrotation: null
 };
 
 function mpld3_Axis(ax, props) {
@@ -110,6 +111,23 @@ mpld3_Axis.prototype.draw = function() {
         "fill": this.props.fontcolor,
         "stroke": "none"
     });
+
+    if (this.props.tickrotation)
+    {
+        var allTickRotations = this.props.tickrotation;
+        var plotdiv = document.getElementById( this.ax.fig.figid );
+        console.log( d3.select(plotdiv).selectAll('.mpld3-xaxis text') )
+        var allticks = d3.select(plotdiv).selectAll('.mpld3-xaxis text').style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em").attr('transform', function(d, i) {
+
+            if ((i < 0) || (i > allTickRotations.length))
+                return "rotate(0)"
+
+            return "rotate(-"+allTickRotations[i] + ")";
+        });
+
+    }
 };
 
 function mpld3_tickFormat(tickformat, tickvalues) {

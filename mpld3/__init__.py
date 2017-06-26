@@ -35,7 +35,7 @@ Functions: IPython Notebook
 __all__ = ["__version__",
            "fig_to_html", "fig_to_dict", "fig_to_d3", "display_d3",
            "display", "show_d3", "show", "save_html", "save_json",
-           "enable_notebook", "disable_notebook", "plugins", "urls"]
+           "enable_notebook", "disable_notebook", "plugins", "urls", "getD3js", "getmpld3js"]
 
 from .__about__ import __version__
 from . import plugins

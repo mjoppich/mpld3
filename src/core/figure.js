@@ -12,7 +12,9 @@ mpld3_Figure.prototype.requiredProps = ["width", "height"];
 mpld3_Figure.prototype.defaultProps = {
     data: {},
     axes: [],
-    plugins: [{type: "reset"}, {type: "zoom"}, {type: "boxzoom"}]
+    plugins: [{type: "reset"}, {type: "zoom"}, {type: "boxzoom"}],
+    figwidth: null,
+    figheight: null
 };
 
 function mpld3_Figure(figid, props) {
@@ -20,6 +22,10 @@ function mpld3_Figure(figid, props) {
     this.figid = figid;
     this.width = this.props.width;
     this.height = this.props.height;
+
+    this.figwidth = this.props.figwidth || this.props.width;
+    this.figheight = this.props.figheight || this.props.height;
+
     this.data = this.props.data;
     this.buttons = [];
 
@@ -133,8 +139,8 @@ mpld3_Figure.prototype.add_plugin = function(props) {
 mpld3_Figure.prototype.draw = function() {
     this.canvas = this.root.append('svg:svg')
         .attr('class', 'mpld3-figure')
-        .attr('width', this.width)
-        .attr('height', this.height);
+        .attr('width', this.figwidth || this.width)
+        .attr('height', this.figheight || this.height);
 
     for (var i = 0; i < this.axes.length; i++) {
         this.axes[i].draw();

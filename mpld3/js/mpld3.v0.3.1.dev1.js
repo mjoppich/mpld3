@@ -291,7 +291,8 @@
     axiscolor: "black",
     scale: "linear",
     grid: {},
-    zorder: 0
+    zorder: 0,
+    tickrotation: null
   };
   function mpld3_Axis(ax, props) {
     mpld3_PlotElement.call(this, ax, props);
@@ -351,6 +352,15 @@
       fill: this.props.fontcolor,
       stroke: "none"
     });
+    if (this.props.tickrotation) {
+      var allTickRotations = this.props.tickrotation;
+      var plotdiv = document.getElementById(this.ax.fig.figid);
+      console.log(d3.select(plotdiv).selectAll(".mpld3-xaxis text"));
+      var allticks = d3.select(plotdiv).selectAll(".mpld3-xaxis text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d, i) {
+        if (i < 0 || i > allTickRotations.length) return "rotate(0)";
+        return "rotate(-" + allTickRotations[i] + ")";
+      });
+    }
   };
   function mpld3_tickFormat(tickformat, tickvalues) {
     if (tickformat === "" || tickformat === null) {
@@ -1366,13 +1376,17 @@
       type: "zoom"
     }, {
       type: "boxzoom"
-    } ]
+    } ],
+    figwidth: null,
+    figheight: null
   };
   function mpld3_Figure(figid, props) {
     mpld3_PlotElement.call(this, null, props);
     this.figid = figid;
     this.width = this.props.width;
     this.height = this.props.height;
+    this.figwidth = this.props.figwidth || this.props.width;
+    this.figheight = this.props.figheight || this.props.height;
     this.data = this.props.data;
     this.buttons = [];
     this.root = d3.select("#" + figid).append("div").style("position", "relative");
@@ -1443,7 +1457,7 @@
     this.plugins.push(new plug(this, props));
   };
   mpld3_Figure.prototype.draw = function() {
-    this.canvas = this.root.append("svg:svg").attr("class", "mpld3-figure").attr("width", this.width).attr("height", this.height);
+    this.canvas = this.root.append("svg:svg").attr("class", "mpld3-figure").attr("width", this.figwidth || this.width).attr("height", this.figheight || this.height);
     for (var i = 0; i < this.axes.length; i++) {
       this.axes[i].draw();
     }

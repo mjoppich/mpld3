@@ -117,7 +117,11 @@ def serve(html, ip='127.0.0.1', port=8888, n_retries=50, files=None,
         threading.Thread(target=b).start()
 
     try:
+
         srvr.serve_forever()
+        #thread = threading.Thread(target=srvr.serve_forever)
+        #thread.daemon = True
+        #thread.start()
     except (KeyboardInterrupt, SystemExit):
         print("\nstopping Server...")
 

@@ -15,7 +15,7 @@ __all__ = ["fig_to_html", "fig_to_dict", "fig_to_d3",
            "display_d3", "display",
            "show_d3", "show",
            "enable_notebook", "disable_notebook",
-           "save_html", "save_json"]
+           "save_html", "save_json", "getD3js", "getmpld3js"]
 
 
 # Simple HTML template. This works in standalone web pages for single figures,
@@ -168,6 +168,17 @@ def fig_to_dict(fig, **kwargs):
     fig, figure_dict, extra_css, extra_js = renderer.finished_figures[0]
     return figure_dict
 
+def getD3js():
+    this_dir, this_filename = os.path.split(__file__)
+    return this_dir + "/js/d3.v3.min.js"
+
+def getmpld3js(debug=False):
+    this_dir, this_filename = os.path.split(__file__)
+
+    if not debug:
+        return this_dir + "/js/mpld3.v0.3.1.dev1.min.js"
+    else:
+        return this_dir + "/js/mpld3.v0.3.1.dev1.js"
 
 def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
                 template_type="general", figid=None, use_http=False, **kwargs):
@@ -240,6 +251,10 @@ def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
     Exporter(renderer, close_mpl=False, **kwargs).run(fig)
 
     fig, figure_json, extra_css, extra_js = renderer.finished_figures[0]
+
+    figure_json['figwidth'] = '100%'
+    figure_json['figheight'] = '100%'
+
 
     if no_extras:
         extra_css = ""
