@@ -18,7 +18,8 @@ mpld3_Axis.prototype.defaultProps = {
     scale: "linear",
     grid: {},
     zorder: 0,
-    tickrotation: null
+    tickrotation: null,
+    visible: true
 };
 
 function mpld3_Axis(ax, props) {
@@ -109,24 +110,31 @@ mpld3_Axis.prototype.draw = function() {
         "font-family": "sans-serif",
         "font-size": this.props.fontsize + "px",
         "fill": this.props.fontcolor,
-        "stroke": "none"
+        "stroke": "none",
+        "text-anchor": "end !important"
     });
 
     if (this.props.tickrotation)
     {
         var allTickRotations = this.props.tickrotation;
         var plotdiv = document.getElementById( this.ax.fig.figid );
-        console.log( d3.select(plotdiv).selectAll('.mpld3-xaxis text') )
+
+        var allTexts = d3.select(plotdiv).selectAll('.mpld3-xaxis text')[0];
+
+        if (allTexts.length == allTickRotations.length)
+        {
+
+
         var allticks = d3.select(plotdiv).selectAll('.mpld3-xaxis text').style("text-anchor", "end")
             .attr("dx", "-.8em")
-            .attr("dy", ".15em").attr('transform', function(d, i) {
+            .attr("dy", "-.35em").attr('transform', function(d, i) {
 
-            if ((i < 0) || (i > allTickRotations.length))
+            if ((i < 0) || (i >= allTickRotations.length) || (allTickRotations[i] == 0))
                 return "rotate(0)"
 
             return "rotate(-"+allTickRotations[i] + ")";
         });
-
+        }
     }
 };
 
@@ -148,6 +156,27 @@ mpld3_Axis.prototype.zoomed = function() {
     // updating them when they pan or zoom off of the chart
     this.filter_ticks(this.axis.tickValues, this.axis.scale().domain());
     this.elem.call(this.axis);
+
+    if (this.props.tickrotation)
+    {
+        var allTickRotations = this.props.tickrotation;
+        var plotdiv = document.getElementById( this.ax.fig.figid );
+
+        var allTexts = d3.select(plotdiv).selectAll('.mpld3-xaxis text')[0];
+
+        if (allTexts.length == allTickRotations.length)
+        {
+        var allticks = d3.select(plotdiv).selectAll('.mpld3-xaxis text').style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", "-.35em").attr('transform', function(d, i) {
+
+            if ((i < 0) || (i >= allTickRotations.length) || (allTickRotations[i] == 0))
+                return "rotate(0)"
+
+            return "rotate(-"+allTickRotations[i] + ")";
+        });
+        }
+    }
 };
 
 mpld3_Axis.prototype.filter_ticks = function(tickValues, domain) {

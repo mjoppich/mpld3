@@ -83,7 +83,7 @@ mpld3_Figure.prototype.showBrush = function(extentClass) {
     brush.on("brushstart", function(d){brush.x(d.xdom).y(d.ydom);});
     this.canvas.selectAll("rect.background")
         .style("cursor", "crosshair")
-        .style("pointer-events", null);
+        .style("pointer-events", "visiblefill");
     this.canvas.selectAll("rect.extent, rect.resize")
         .style("display", null)
         .classed(extentClass, true);
@@ -142,6 +142,8 @@ mpld3_Figure.prototype.draw = function() {
         .attr('width', this.figwidth || this.width)
         .attr('height', this.figheight || this.height);
 
+
+
     for (var i = 0; i < this.axes.length; i++) {
         this.axes[i].draw();
     }
@@ -150,10 +152,13 @@ mpld3_Figure.prototype.draw = function() {
     this.disable_zoom();
 
     for (var i = 0; i < this.plugins.length; i++) {
-        this.plugins[i].draw();
+            this.plugins[i].draw();
     }
 
     this.toolbar.draw();
+
+    d3.selectAll('.background').style('pointer-events','none');
+    d3.selectAll('.linkedbrush').style('pointer-events','none');
 };
 
 mpld3_Figure.prototype.reset = function(duration) {

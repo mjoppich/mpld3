@@ -313,6 +313,19 @@ class PointHTMLTooltip(PluginBase):
     };
 
     HtmlTooltipPlugin.prototype.draw = function(){
+
+       combinedElements = null;
+       for (var i = 0; i < this.props.ids.length; i++)
+       {
+          var obj = mpld3.get_element(this.props.id);
+          if (combinedElements == null)
+          {
+              combinedElements = obj.elements();
+          } else {
+              combinedElements[0] = combinedElements[0].concat(obj.elements()[0]);
+          }
+       }
+
        var obj = mpld3.get_element(this.props.id);
        var labels = this.props.labels;
        var tooltip = d3.select("body").append("div")
@@ -321,8 +334,7 @@ class PointHTMLTooltip(PluginBase):
                     .style("z-index", "10")
                     .style("visibility", "hidden");
 
-       obj.elements()
-           .on("mouseover", function(d, i){
+       combinedElements.on("mouseover", function(d, i){
                               tooltip.html(labels[i])
                                      .style("visibility", "visible");})
            .on("mousemove", function(d, i){
