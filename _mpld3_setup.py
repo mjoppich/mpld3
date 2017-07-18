@@ -18,7 +18,7 @@ except:
 
 
 SUBMODULES = ['mplexporter']
-SUBMODULE_SYNC_PATHS = [('mplexporter/mplexporter', 'mpld3/mplexporter')]
+SUBMODULE_SYNC_PATHS = [('mplexporter/mplexporter', 'mjoppich/mplexporter')]
 
 
 def get_version():
@@ -86,7 +86,7 @@ def check_submodule_status(root=None):
 def update_submodules(repo_dir):
     """update submodules in a repo"""
     subprocess.check_call("git submodule init", cwd=repo_dir, shell=True)
-    subprocess.check_call("git submodule update --recursive",
+    subprocess.check_call("git submodule update --remote --merge --recursive",
                           cwd=repo_dir, shell=True)
 
 
@@ -166,7 +166,7 @@ class UpdateSubmodules(Command):
         failure = False
         try:
             self.spawn('git submodule init'.split())
-            self.spawn('git submodule update --recursive'.split())
+            self.spawn('git submodule update --recursive --remote --merge'.split())
         except Exception as e:
             failure = e
             print(e)

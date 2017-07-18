@@ -117,7 +117,7 @@ mpld3_Axis.prototype.draw = function() {
     if (this.props.tickrotation)
     {
         var allTickRotations = this.props.tickrotation;
-        var plotdiv = document.getElementById( this.ax.fig.figid );
+        var plotdiv = document.getElementById( this.ax.axid );
 
         var allTexts = d3.select(plotdiv).selectAll('.mpld3-xaxis text')[0];
 
@@ -160,7 +160,7 @@ mpld3_Axis.prototype.zoomed = function() {
     if (this.props.tickrotation)
     {
         var allTickRotations = this.props.tickrotation;
-        var plotdiv = document.getElementById( this.ax.fig.figid );
+        var plotdiv = document.getElementById( this.ax.axid );
 
         var allTexts = d3.select(plotdiv).selectAll('.mpld3-xaxis text')[0];
 

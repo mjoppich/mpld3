@@ -180,7 +180,8 @@ mpld3_Axes.prototype.draw = function() {
         .attr('transform', 'translate(' + this.position[0] + ',' + this.position[1] + ')')
         .attr('width', this.width)
         .attr('height', this.height)
-        .attr('class', "mpld3-baseaxes");
+        .attr('class', "mpld3-baseaxes")
+        .attr("id", this.axid);
 
     this.clip = this.baseaxes.append("svg:clipPath")
         .attr("id", this.clipid)
@@ -193,6 +194,7 @@ mpld3_Axes.prototype.draw = function() {
     this.axes = this.baseaxes.append("g")
         .attr("class", "mpld3-axes")
         .attr("clip-path", "url(#" + this.clipid + ")");
+
 
     this.axesbg = this.axes.append("svg:rect")
         .attr("width", this.width)
