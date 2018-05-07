@@ -181,7 +181,8 @@ def getmpld3js(debug=False):
         return this_dir + "/js/mpld3.v0.3.1.dev1.js"
 
 def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
-                template_type="general", figid=None, use_http=False, **kwargs):
+                template_type="general", figid=None, use_http=False,
+                figHeight='100%', figWidth='100%', figBB=None, **kwargs):
     """Output html representation of the figure
 
     Parameters
@@ -252,8 +253,11 @@ def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
 
     fig, figure_json, extra_css, extra_js = renderer.finished_figures[0]
 
-    figure_json['figwidth'] = '100%'
-    figure_json['figheight'] = '100%'
+    figure_json['figwidth'] = figWidth
+    figure_json['figheight'] = figHeight
+
+    if figBB != None:
+        figure_json['bbox']=figBB
 
 
     if no_extras:
