@@ -18,7 +18,7 @@ except:
 
 
 SUBMODULES = ['mplexporter']
-SUBMODULE_SYNC_PATHS = [('mplexporter/mplexporter', 'mjoppich/mplexporter')]
+SUBMODULE_SYNC_PATHS = [('mplexporter/mplexporter', 'mpld3/mplexporter')]
 
 
 def get_version():
