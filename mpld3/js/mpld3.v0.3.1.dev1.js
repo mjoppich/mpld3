@@ -1404,15 +1404,19 @@
       type: "boxzoom"
     } ],
     figwidth: null,
-    figheight: null
+    figheight: null,
+    figtext: [],
+    styles: null
   };
   function mpld3_Figure(figid, props) {
     mpld3_PlotElement.call(this, null, props);
     this.figid = figid;
     this.width = this.props.width;
     this.height = this.props.height;
+    this.figtext = this.props.figtext;
     this.figwidth = this.props.figwidth || this.props.width;
     this.figheight = this.props.figheight || this.props.height;
+    this.styles = this.props.styles;
     this.data = this.props.data;
     this.buttons = [];
     this.root = d3.select("#" + figid).append("div").style("position", "relative");
@@ -1483,7 +1487,17 @@
     this.plugins.push(new plug(this, props));
   };
   mpld3_Figure.prototype.draw = function() {
+    if (this.figtext) {
+      for (var i = 0; i < this.figtext.length; ++i) {
+        this.root.html("<h1>" + this.figtext[i]["text"] + "</h1>");
+      }
+    }
     this.canvas = this.root.append("svg:svg").attr("class", "mpld3-figure").attr("width", this.figwidth || this.width).attr("height", this.figheight || this.height);
+    if (this.props.styles != null) {
+      for (var skey in this.props.styles) {
+        this.canvas.style(skey, this.props.styles[skey]);
+      }
+    }
     for (var i = 0; i < this.axes.length; i++) {
       this.axes[i].draw();
     }

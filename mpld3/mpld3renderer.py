@@ -107,6 +107,22 @@ class MPLD3Renderer(Renderer):
                                 id=get_id(fig))
 
     def close_figure(self, fig):
+
+
+        figTexts = []
+        for text in fig.texts:
+            txt = text._text
+            x = text._x
+            y = text._y
+
+            figTexts.append({
+                'text': txt,
+                'x': x,
+                'y': y
+            })
+
+        self.figure_json['figtext'] = figTexts
+
         additional_css = []
         additional_js = []
         for i, dataset in enumerate(self.datasets):

@@ -90,6 +90,20 @@ def update_submodules(repo_dir):
                           cwd=repo_dir, shell=True)
 
 
+def copytree(src, dst, symlinks=False, ignore=None):
+
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
+
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            #shutil.copytree(s, d, symlinks, ignore)
+            os.makedirs(d)
+        else:
+            shutil.copy2(s, d)
+
 def sync_files(source, dest):
     """Syncs files copies files from `source` directory to the
     `dest` directory.  A check is first done to see if the `dest`
@@ -100,6 +114,13 @@ def sync_files(source, dest):
         try:
             print("Remove {0}".format(dest))
             shutil.rmtree(dest)
+
+            if source[-1] != "/":
+                source += "/"
+
+            if dest[-1] != "/":
+                dest += "/"
+
         except OSError as e:
             # An error occured tyring to remove directory
             print(e.errno)
@@ -107,7 +128,7 @@ def sync_files(source, dest):
             print(e.strerror)
 
     print("Copying {0} to {1}".format(source, dest))
-    shutil.copytree(source, dest)
+    copytree(source, dest)
 
 
 def sync_submodules(repo_dir):

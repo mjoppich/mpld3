@@ -71,6 +71,8 @@ if(typeof(window.mpld3) !== "undefined" && window.mpld3._mpld3IsLoaded){
 """)
 
 
+
+
 # General HTML template.  This should work correctly whether or not requirejs
 # is defined, and whether it's embedded in a notebook or in a standalone
 # HTML page.
@@ -124,17 +126,22 @@ TEMPLATE_DICT = {"simple": SIMPLE_HTML,
                  "general": GENERAL_HTML}
 
 
-class NumpyEncoder(json.JSONEncoder):
-    """ Special json encoder for numpy types """
 
+class NumpyEncoder(json.JSONEncoder):
+    """ Custom encoder for numpy data types """
     def default(self, obj):
         if isinstance(obj, (numpy.int_, numpy.intc, numpy.intp, numpy.int8,
-            numpy.int16, numpy.int32, numpy.int64, numpy.uint8,
-            numpy.uint16,numpy.uint32, numpy.uint64)):
+                            numpy.int16, numpy.int32, numpy.int64, numpy.uint8,
+                            numpy.uint16, numpy.uint32, numpy.uint64)):
+
             return int(obj)
-        elif isinstance(obj, (numpy.float_, numpy.float16, numpy.float32, 
-            numpy.float64)):
+
+        elif isinstance(obj, (numpy.float_, numpy.float16, numpy.float32, numpy.float64)):
             return float(obj)
+
+        elif isinstance(obj, (numpy.ndarray,)):
+            return obj.tolist()
+
         return json.JSONEncoder.default(self, obj)
 
 
@@ -180,9 +187,9 @@ def getmpld3js(debug=False):
     else:
         return this_dir + "/js/mpld3.v0.3.1.dev1.js"
 
-def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
+def fig_to_html(fig, d3_url=None, mpld3_url=None, mathjax_url=None, no_extras=False,
                 template_type="general", figid=None, use_http=False,
-                figHeight='100%', figWidth='100%', figBB=None, **kwargs):
+                figHeight='100%', figWidth='100%', figBB=None, styles=None, **kwargs):
     """Output html representation of the figure
 
     Parameters
@@ -255,6 +262,9 @@ def fig_to_html(fig, d3_url=None, mpld3_url=None, no_extras=False,
 
     figure_json['figwidth'] = figWidth
     figure_json['figheight'] = figHeight
+
+    if styles != None:
+        figure_json['styles'] = styles
 
     if figBB != None:
         figure_json['bbox']=figBB
