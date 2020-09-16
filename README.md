@@ -1,6 +1,31 @@
 mpld3: A D3 Viewer for Matplotlib
 =================================
 
+
+This is a modified version of mpld3 with some fixes that were required for my application
+
+Quick-Build
+-----------
+
+Within the git source directory, you can download the mplexporter dependency
+and copy it into the mpld3 source directory using the following command:
+
+    [~]$ python3 setup.py submodule
+
+Once the submodule command has been run, you can build the package locally using
+
+    [~]$ python3 setup.py build
+
+or install the package to the standard Python path using:
+
+    [~]$ sudo python3 setup.py install
+
+
+
+Original
+--------
+
+
 - Author: Jake Vanderplas <jakevdp@cs.washington.edu>
 - License: BSD 3-clause
 
